@@ -6,7 +6,7 @@ import (
     "path"
 )
 
-func initTemplates(templateFS embed.FS, templateBasePath string) *template.Template {
+func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Template {
     var pageTemplates *template.Template = template.New("pages")
     if len(templateBasePath) == 0 {
         templateBasePath = "."
