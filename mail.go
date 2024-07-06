@@ -1,4 +1,4 @@
-package mail
+package go_blueberry
 
 import (
     "context"
