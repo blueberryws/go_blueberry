@@ -1,4 +1,4 @@
-package pages 
+package go_blueberry 
 
 import (
     "embed"
