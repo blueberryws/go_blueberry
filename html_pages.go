@@ -21,3 +21,10 @@ func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Templ
     }
     return pageTemplates
 }
+
+
+func HtmlTemplateHandler(template_path string, template_data any) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        pageTemplates.ExecuteTemplate(w, template_path, template_data)
+    }
+}
