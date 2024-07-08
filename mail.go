@@ -10,18 +10,18 @@ import (
 )
 
 type Mail struct {
-    sender string
-    senderDomain string
-    apiKey string
-    recipient string
+    Sender string
+    SenderDomain string
+    ApiKey string
+    Recipient string
 }
 
 func (m Mail) SendMail(subject, body string) {
     // Create an instance of the Mailgun Client
-    mg := mailgun.NewMailgun(m.senderDomain, m.apiKey)
+    mg := mailgun.NewMailgun(m.SenderDomain, m.ApiKey)
 
     // The message object allows you to add attachments and Bcc recipients
-    message := mg.NewMessage(m.sender, subject, body, m.recipient)
+    message := mg.NewMessage(m.Sender, subject, body, m.Recipient)
 
     ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
     defer cancel()
