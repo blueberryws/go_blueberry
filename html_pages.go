@@ -2,8 +2,9 @@ package go_blueberry
 
 import (
     "embed"
-    "html/template"
     "path"
+    "html/template"
+    "net/http"
 )
 
 func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Template {
@@ -23,7 +24,7 @@ func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Templ
 }
 
 
-func HtmlTemplateHandler(template_path string, template_data any) http.HandlerFunc {
+func HtmlTemplateHandler(pageTemplates *template.Template, template_path string, template_data any) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         pageTemplates.ExecuteTemplate(w, template_path, template_data)
     }
