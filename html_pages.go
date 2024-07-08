@@ -28,11 +28,13 @@ func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Templ
 }
 
 
-func HtmlTemplateHandler(pageTemplates *template.Template, template_path string, template_data any) http.HandlerFunc {
+func HtmlTemplateHandler[T any](pageTemplates *template.Template, templatePath string, dataGetter func() T) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        pageTemplates.ExecuteTemplate(w, template_path, template_data)
+        templateData := dataGetter()
+        pageTemplates.ExecuteTemplate(w, templatePath, templateData)
     }
 }
+
 
 func HandleContactFormRequest[FormType any](mail Mail, templateCollection *template.Template, subjectTemplate string, emailTemplate string, thankYouTemplate string) http.HandlerFunc {
        return func(w http.ResponseWriter, r *http.Request) {
