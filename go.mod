@@ -3,6 +3,7 @@ module github.com/blueberryws/go_blueberry
 go 1.22.4
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/schema v1.4.1
 	github.com/mailgun/mailgun-go/v4 v4.12.0
 )
