@@ -211,7 +211,7 @@ func (s Square) AnonCheckoutLink(products []Product) (string, string) {
     if err != nil {
             panic(err)
     }
-    url := jsonResponse.PaymentLink.URL
+    url := jsonResponse.PaymentLink.LongURL
     transactionId := jsonResponse.PaymentLink.ID
     return url, transactionId
 }
