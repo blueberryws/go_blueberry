@@ -4,6 +4,7 @@ import (
     "bytes"
     "embed"
     "path"
+    "strings"
     "html/template"
     "net/http"
     "github.com/gorilla/schema"
@@ -21,6 +22,9 @@ func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Templ
         panic(err)
     }
     for _, templateFile := range templates {
+        if (strings.HasSuffix(templateFile.Name(), "swp")) {
+            continue
+        }
         templateFullPath := path.Join(templateBasePath, templateFile.Name())
         template.Must(pageTemplates.ParseFS(templateFS, templateFullPath))
     }
