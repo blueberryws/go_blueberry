@@ -212,6 +212,6 @@ func (s Square) AnonCheckoutLink(products []Product) (string, string) {
             panic(err)
     }
     url := jsonResponse.PaymentLink.LongURL
-    transactionId := jsonResponse.PaymentLink.ID
+    transactionId := jsonResponse.PaymentLink.OrderID
     return url, transactionId
 }
