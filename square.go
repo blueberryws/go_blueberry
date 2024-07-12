@@ -15,6 +15,12 @@ type Square struct {
     CheckoutUrl string
     AppBaseUrl string
     RedirectPath string
+    Tax SquareTax
+}
+
+type SquareTax struct {
+    Name string `json:"name"`
+    Percentage string `json:"percentage"`
 }
 
 type Product struct {
@@ -35,6 +41,7 @@ type SquareCheckoutOptions struct {
 type SquareOrder struct {
     LocationId string `json:"location_id"`
     LineItems []SquareLineItem `json:"line_items"`
+    Tax []SquareTax `json:"taxes"`
 }
 
 type SquareLineItem struct {
@@ -176,9 +183,11 @@ func (s Square) AnonCheckoutLink(products []Product) (string, string) {
             product.Name + " - " + product.Options,
         })
     }
-    order := SquareOrder{
-        s.LocationId,
-        lineItems,
+    order := SquareOrder{}
+    order.LocationId = s.LocationId
+    order.LineItems = lineItems
+    if (s.Tax != SquareTax{}) {
+        order.Tax = []SquareTax{s.Tax}
     }
     idempotencyKey := uuid.New().String()
     request := SquareCheckoutRequest{
