@@ -8,7 +8,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func createPagesTable(db *sql.DB) {
+func CreatePagesTable(db *sql.DB) {
 	_, err := db.Exec(`CREATE TABLE page_data (
                         name TEXT PRIMARY KEY,
                         content TEXT NOT NULL
@@ -19,7 +19,7 @@ func createPagesTable(db *sql.DB) {
 	}
 }
 
-func insertPageData[T any](name string, page T, db *sql.DB) (int64, error) {
+func InsertPageData[T any](name string, page T, db *sql.DB) (int64, error) {
 	// serialize to JSON.
 	pageJson, err := json.Marshal(page)
 	result, err := db.Exec(
@@ -32,7 +32,7 @@ func insertPageData[T any](name string, page T, db *sql.DB) (int64, error) {
 	return id, nil
 }
 
-func updatePageData[T any](name string, page T, db *sql.DB) error {
+func UpdatePageData[T any](name string, page T, db *sql.DB) error {
 	pageJson, err := json.Marshal(page)
 	_, err = db.Exec(
 		`UPDATE page_data set content=? where name=?;`, string(pageJson), name,
@@ -40,7 +40,7 @@ func updatePageData[T any](name string, page T, db *sql.DB) error {
 	return err
 }
 
-func getPageData[T any](name string, db *sql.DB) (T, error) {
+func GetPageData[T any](name string, db *sql.DB) (T, error) {
 	rows, err := db.Query(
 		`SELECT content FROM page_data WHERE name=?;`, name,
 	)
@@ -61,7 +61,7 @@ func getPageData[T any](name string, db *sql.DB) (T, error) {
 	return pageData, err
 }
 
-func makePageDataGetter[T any](name string, db *sql.DB) func() T {
+func MakePageDataGetter[T any](name string, db *sql.DB) func() T {
 	return func() T {
 		pageData, err := getPageData[T](name, db)
 		if err != nil {
