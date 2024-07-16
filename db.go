@@ -63,7 +63,7 @@ func GetPageData[T any](name string, db *sql.DB) (T, error) {
 
 func MakePageDataGetter[T any](name string, db *sql.DB) func() T {
 	return func() T {
-		pageData, err := getPageData[T](name, db)
+		pageData, err := GetPageData[T](name, db)
 		if err != nil {
 			log.Fatal(err)
 		}
