@@ -1,8 +1,6 @@
 package go_blueberry
 
-import "html/template"
-
-const splitScroll template.HTML = `
+const SplitScroll string = `
 <template id="split-scroll-template" class="split-scroll">
   <style>
     .split-scroll {
