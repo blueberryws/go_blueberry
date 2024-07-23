@@ -1,6 +1,7 @@
 package go_blueberry
 
 const SplitScroll string = `
+{{ define "SplitScroll" }}
 <template id="split-scroll-template" class="split-scroll">
   <style>
     .split-scroll {
@@ -43,4 +44,5 @@ const SplitScroll string = `
     },
   );
 </script>
+{{ end }}
 `
