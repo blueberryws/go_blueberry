@@ -12,6 +12,10 @@ import (
 
 var decoder = schema.NewDecoder()
 
+type Validatable interface {
+    Validate() bool
+}
+
 func InitTemplates(templateFS embed.FS, templateBasePath string) *template.Template {
 	var pageTemplates *template.Template = template.New("pages")
 	if len(templateBasePath) == 0 {
@@ -38,7 +42,7 @@ func HtmlTemplateHandler[T any](pageTemplates *template.Template, templatePath s
 	}
 }
 
-func HandleContactFormRequest[FormType any](mail Mail, templateCollection *template.Template, subjectTemplate string, emailTemplate string, thankYouTemplate string) http.HandlerFunc {
+func HandleContactFormRequest[FormType Validatable](mail Mail, templateCollection *template.Template, subjectTemplate string, emailTemplate string, thankYouTemplate string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.ParseForm() != nil {
 			http.Error(w, "Could not parse form.", http.StatusBadRequest)
@@ -49,6 +53,9 @@ func HandleContactFormRequest[FormType any](mail Mail, templateCollection *templ
 		if err != nil {
 			panic(err)
 		}
+        if !form.Validate() {
+            panic(err)
+        }
 
 		var subject bytes.Buffer
 		templateCollection.ExecuteTemplate(&subject, subjectTemplate, form)
