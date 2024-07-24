@@ -45,18 +45,17 @@ func HtmlTemplateHandler[T any](pageTemplates *template.Template, templatePath s
 func HandleContactFormRequest[FormType Validatable](mail Mail, templateCollection *template.Template, subjectTemplate string, emailTemplate string, thankYouTemplate string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.ParseForm() != nil {
-			http.Error(w, "Could not parse form.", http.StatusBadRequest)
+            w.WriteHeader(http.StatusBadRequest)
+            templateCollection.ExecuteTemplate(w, "badRequest", "") 
 			return
 		}
 		var form FormType
 		err := decoder.Decode(&form, r.PostForm)
-		if err != nil {
-			panic(err)
-		}
-        if !form.Validate() {
-            panic(err)
+		if err != nil || !form.Validate() {
+            w.WriteHeader(http.StatusBadRequest)
+            templateCollection.ExecuteTemplate(w, "badRequest", "") 
+            return
         }
-
 		var subject bytes.Buffer
 		templateCollection.ExecuteTemplate(&subject, subjectTemplate, form)
 
@@ -68,5 +67,5 @@ func HandleContactFormRequest[FormType Validatable](mail Mail, templateCollectio
 		)
 
 		templateCollection.ExecuteTemplate(w, thankYouTemplate, "")
-	}
+    }
 }
